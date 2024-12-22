@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datetime-hash-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datetime-hash
+  template:
+    metadata:
+      labels:
+        app: datetime-hash
+    spec:
+      containers:
+        - name: datetime-hash
+          image: ilikka/python-datetime-hash:002
