@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-app
+  template:
+    metadata:
+      labels:
+        app: front-app
+    spec:
+      containers:
+        - name: front-app
+          image: ilikka/front_app:001
+          ports:
+            - containerPort: 5000
+
