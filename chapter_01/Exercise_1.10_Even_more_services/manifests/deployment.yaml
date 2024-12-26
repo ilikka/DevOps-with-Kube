@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hash-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hash-app
+  template:
+    metadata:
+      labels:
+        app: hash-app
+    spec:
+      volumes:
+        - name: shared-hash 
+          emptyDir: {}
+      containers:
+        - name: hash-gen 
+          image: ilikka/hash-generator:002
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/src/app/files
+        - name: hash-reader 
+          image: ilikka/hash-reader:001
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/src/app/files

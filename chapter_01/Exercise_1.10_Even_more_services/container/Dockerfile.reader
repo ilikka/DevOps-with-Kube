@@ -5,18 +5,14 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy the app files to the container
-COPY ping-pong-server.py .
+COPY logoutput_app.py .
 
 # Install Flask
-RUN pip install Flask jsonify python-dotenv 
+RUN pip install Flask
 
-
-ENV FLASK_HOST=0.0.0.0
-ENV FLASK_PORT=3000
-ENV PING_PATH=/pingpong
 
 # Expose the port that Flask uses
 EXPOSE 3000
 
 # Run the app
-CMD ["python", "ping-pong-server.py"]
+CMD ["python", "logoutput_app.py"]
