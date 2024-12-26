@@ -14,7 +14,7 @@ RUN pip install Flask
 ENV VARIABLE="Hello from Docker!"
 
 # Expose the port that Flask uses
-EXPOSE 5000
+EXPOSE 3000
 
 # Run the app
 CMD ["python", "front_app.py"]

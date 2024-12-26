@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front-app-dep
+  name: logoutput-app-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: front-app
+      app: logoutput-app
   template:
     metadata:
       labels:
-        app: front-app
+        app: logoutput-app
     spec:
       containers:
-        - name: front-app
-          image: ilikka/front_app:002
+        - name: logout-app
+          image: ilikka/logoutput_app:001
           ports:
             - containerPort: 3000
 
