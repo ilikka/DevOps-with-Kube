@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hash-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hash-app
+  template:
+    metadata:
+      labels:
+        app: hash-app
+    spec:
+      volumes:
+        - name: shared-hash 
+          persistentVolumeClaim:
+            claimName: hash-volume-claim 
+      containers:
+        - name: request-counter
+          image: ilikka/pingpong-app:003
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: FLASK_PORT
+              value: '5000'
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/src/app/files
+        - name: log-output-app
+          image: ilikka/logoutput_app:003
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: BACKEND_URL 
+              value: http://hash-app-svc:5000/ping
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/src/app/files
