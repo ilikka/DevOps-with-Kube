@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hash-app-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: hash-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 2345  # This is a port that is available to the cluster, in this case it can be ~ anything
+      targetPort: 3000 # This is the target ports
+    - name: pong
+      protocol: TCP 
+      port: 5000
+      targetPort: 5000
+      

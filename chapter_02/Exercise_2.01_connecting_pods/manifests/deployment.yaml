@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hash-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hash-app
+  template:
+    metadata:
+      labels:
+        app: hash-app
+    spec:
+      containers:
+        - name: request-counter
+          image: ilikka/pingpong-app:004
+          imagePullPolicy: Always
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: FLASK_PORT
+              value: '5000'
+        - name: log-output-app
+          image: ilikka/logoutput_app:004
+          imagePullPolicy: Always
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: BACKEND_URL 
+              value: http://hash-app-svc:5000/ping
