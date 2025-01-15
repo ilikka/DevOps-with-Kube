@@ -24,8 +24,10 @@ spec:
               value: /usr/src/app/files
             - name: FILE_NAME
               value: request.txt
+            - name: PING_PATH
+              value: "/pingpong"
             - name: FLASK_PORT
-              value: '5000'
+              value: 3000
           volumeMounts: # Mount volume
           - name: shared-hash
             mountPath: /usr/src/app/files
@@ -37,7 +39,7 @@ spec:
             - name: FILE_NAME
               value: request.txt
             - name: BACKEND_URL 
-              value: http://hash-app-svc:5000/ping
+              value: http://request-counter:3000/pingpong
           volumeMounts: # Mount volume
           - name: shared-hash
             mountPath: /usr/src/app/files

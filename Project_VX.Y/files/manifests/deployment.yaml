@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todos-dep
+  namespace: todos-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todos-app
+  template:
+    metadata:
+      labels:
+        app: todos-app
+    spec:
+      volumes:
+        - name: todo-volume
+          persistentVolumeClaim: 
+            claimName: todos-volume-claim
+      containers:
+        - name: todos-frontend
+          image: ilikka/todos-app:001
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+          volumeMounts: # Mount volume
+          - name: todo-volume
+            mountPath: /usr/src/app/files
+        - name: todos-backend
+          image: ilikka/todos-backend:001
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+          volumeMounts: # Mount volume
+          - name: todo-volume
+            mountPath: /usr/src/app/files
