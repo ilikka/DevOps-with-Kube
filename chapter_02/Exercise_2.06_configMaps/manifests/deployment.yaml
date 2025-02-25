@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hash-app-dep
+  namespace: hash-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hash-app
+  template:
+    metadata:
+      labels:
+        app: hash-app
+    spec:
+      containers:
+        - name: request-counter
+          image: ilikka/pingpong_app:004
+          imagePullPolicy: Always
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: FLASK_PORT
+              value: '5000'
+        - name: log-output-app
+          image: ilikka/logoutput_app:005
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config 
+              subPath: serverconfig.txt
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: BACKEND_URL 
+              value: http://hash-app-svc:5000/ping
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: hash-app-configmap
+                  key: serverconfig.txt
+      volumes:
+        - name: config-volume
+          configMap:
+            name: hash-app-configmap  # Reference the ConfigMap you want to mount
