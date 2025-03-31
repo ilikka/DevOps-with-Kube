@@ -1,3 +1,10 @@
 kubectl run -it --rm --restart=Never --image postgres psql-for-debugging sh 
 psql postgres://admin:password@postgres-service:5432/mydb
 
+
+kubectl run -it --rm --restart=Never --image postgres psql-for-debugging sh 
+ psql postgres://admin:password@postgres-service-svc.devops-ns.svc.cluster.local:5432/devopsdb
+
+
+SELECT nextval('select_counter_seq');
+
