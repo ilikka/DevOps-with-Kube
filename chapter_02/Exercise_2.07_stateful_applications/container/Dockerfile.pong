@@ -6,9 +6,10 @@ WORKDIR /app
 
 # Copy the app files to the container
 COPY ping-pong-server.py .
+COPY requirements.txt . 
 
 # Install Flask
-RUN pip install Flask jsonify python-dotenv 
+RUN pip install -r requirements.txt 
 
 
 # ENV FLASK_HOST=0.0.0.0

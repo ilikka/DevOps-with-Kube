@@ -1,20 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+  name: pingpong-app
+  namespace: devops-ns
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: pingpong-app
   template:
     metadata:
       labels:
-        app: my-app
+        app: pingpong-app
     spec:
       containers:
-        - name: my-app-container
-          image: my-app-image
+        - name: request-counter
+          image: ilikka/pingpong_app:005
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"    # Requests 0.25 CPU
+              memory: "256Mi" # Requests 256MB RAM
+            limits:
+              cpu: "500m"    # Maximum 0.5 CPU
+              memory: "512Mi" # Maximum 512MB RAM
           env:
-            - name: DATABASE_URL
-              value: "postgres://admin:password@postgres-service:5432/mydb"
+            - name: DB_HOST
+              value: "postgres-service-svc.devops-ns.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "devopsdb"
+            - name: DB_USER
+              value: "admin"
+            - name: DB_PASSWORD
+              value: "password"
+        - name: log-output-app
+          image: ilikka/logoutput_app:005
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"    # Requests 0.25 CPU
+              memory: "256Mi" # Requests 256MB RAM
+            limits:
+              cpu: "500m"    # Maximum 0.5 CPU
+              memory: "512Mi" # Maximum 512MB RAM
+          env:
+            - name: FILE_DIRECTORY
+              value: /usr/src/app/files
+            - name: FILE_NAME
+              value: request.txt
+            - name: BACKEND_URL 
+              value: http://pingpong-app-svc:5000/ping
+
+
+

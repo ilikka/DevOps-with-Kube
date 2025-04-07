@@ -1,0 +1,2 @@
+docker build -f Dockerfile.pong  -t ilikka/pingpong_app:005 .
+docker push ilikka/pingpong_app:005 
