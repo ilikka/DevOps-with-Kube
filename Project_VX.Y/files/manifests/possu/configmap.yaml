@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+  namespace: todos-ns
+data:
+  init-db.sql: |
+    DROP TABLE IF EXISTS todos;
+
+    CREATE TABLE todos (
+        id SERIAL PRIMARY KEY,
+        todos VARCHAR(100),
+        complete BOOLEAN DEFAULT FALSE
+    );
+
